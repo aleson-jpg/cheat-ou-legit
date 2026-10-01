@@ -133,6 +133,37 @@ Move Kill (Avg/Med/Std/Spread): 3.24/0/11.7/12.1"></textarea>
     </div>
   </div>
 
+  <!-- BLOCO 2.5 — 5E_Prac -->
+  <div class="card" id="c25" data-blk="25" data-min="5">
+    <h2>2.5 · Prefire no 5E_Prac <span class="badge key">⭐ 5 min</span><span class="badge ok hide" id="ok25">✅ feito hoje</span></h2>
+    <p class="why"><b>As MESMAS 3 rotas do bloco 2</b>, agora com bot. É a ponte entre andar sozinho
+    e o caos do deathmatch.<br><br>
+    <b>Regra única:</b> contra-passo antes de cada tiro. Atirou deslizando → conta o erro.<br><br>
+    ⚠️ <b>Não troque de rota.</b> A rota repetida é o que torna o número comparável — o DM não tem isso.</p>
+    <div class="tmr"><span class="big">05:00</span><button class="go">Iniciar</button><button class="rs">Zerar</button></div>
+    <button class="btn ok" onclick="abrir(25)">✅ Concluí este bloco</button>
+
+    <div class="form hide" id="f25">
+      <div class="row">
+        <div><label>Mapa</label><select id="p-mapa">
+          <option>Dust2</option><option>Mirage</option><option>Inferno</option><option>Nuke</option>
+          <option>Overpass</option><option>Ancient</option><option>Vertigo</option>
+          <option>Train</option><option>Anubis</option><option>Cache</option></select></div>
+        <div><label>Dificuldade</label><select id="p-dif">
+          <option>1</option><option>2</option><option>3</option><option>4</option></select></div>
+      </div>
+      <label>Rota</label><input id="p-rota" placeholder="ex: TR → A pelo longo">
+      <div class="row">
+        <div><label>⭐ Erros de contra-passo</label><input type="number" id="p-err" placeholder="8"></div>
+        <div><label>Mortes</label><input type="number" id="p-mortes" placeholder="3"></div>
+      </div>
+      <p class="hint">Mesma rota + mesma dificuldade = comparável. Mudou um dos dois, começa série nova.</p>
+      <label>Anotação</label><textarea id="p-nota" placeholder="qual ângulo te pegou? onde deslizou?"></textarea>
+      <button class="btn" onclick="salvarBloco(25)">SALVAR BLOCO 2.5</button>
+      <button class="btn ghost" onclick="fechar(25)">cancelar</button>
+    </div>
+  </div>
+
   <!-- BLOCO 3 -->
   <div class="card" id="c3" data-blk="3" data-min="15">
     <h2>3 · Transferência <span class="badge key">⭐ 15 min — O QUE IMPORTA</span><span class="badge ok hide" id="ok3">✅ feito hoje</span></h2>
@@ -200,6 +231,15 @@ Move Kill (Avg/Med/Std/Spread): 3.24/0/11.7/12.1"></textarea>
     <h2>Altura de mira — bloco 2</h2>
     <p class="why">Fração de ângulos com a mira baixa. Quer caindo.</p>
     <div id="g-mira"></div>
+  </div>
+
+  <div class="card">
+    <h2>⭐ 5E_Prac — erros por rota</h2>
+    <p class="why">Mesma rota repetida = a única medida realmente comparável que você tem.</p>
+    <div id="g-prac"></div>
+    <div style="overflow-x:auto;margin-top:10px"><table id="t-prac"><thead><tr>
+      <th>Data</th><th>Mapa</th><th>Rota</th><th class="n">dif</th>
+      <th class="n">erros</th><th class="n">mortes</th></tr></thead><tbody></tbody></table></div>
   </div>
 
   <div class="card">
@@ -333,6 +373,17 @@ function salvarBloco(b){
     else msg='Bloco 2 salvo';
     ['b-min','b-mapa','b-ang','b-baixa','b-nota'].forEach(i=>document.getElementById(i).value='');
   }
+  if(b===25){
+    Object.assign(r,{mapa:g('p-mapa'),dif:n('p-dif'),rota:g('p-rota')||null,
+      erros:n('p-err'),mortes:n('p-mortes'),nota:g('p-nota')||null});
+    const ig=d.sessoes.filter(x=>x.bloco===25&&x.mapa===r.mapa&&x.rota===r.rota&&x.dif===r.dif&&x.erros!=null);
+    msg = (r.erros==null) ? 'Bloco 2.5 salvo'
+        : ig.length ? (r.erros<Math.min(...ig.map(x=>x.erros))
+            ? 'Salvo — '+r.erros+' erros: MELHOR nessa rota 🔥 (antes '+Math.min(...ig.map(x=>x.erros))+')'
+            : 'Salvo — '+r.erros+' erros nessa rota (melhor seu: '+Math.min(...ig.map(x=>x.erros))+')')
+          : 'Salvo — 1ª vez nessa rota/dificuldade. Vira sua base';
+    ['p-rota','p-err','p-mortes','p-nota'].forEach(i=>document.getElementById(i).value='');
+  }
   if(b===3){
     Object.assign(r,{minutos:n('t-min'),erros:n('t-err'),nota:g('t-nota')||null});
     if(['t-v','t-m','t-tc','t-d','t-p'].some(i=>g(i))||g('t-mapa'))
@@ -352,13 +403,13 @@ function salvarBloco(b){
 /* ---------- estado do dia ---------- */
 function marcar(){
   const s=ler().sessoes, h=hoje();
-  [1,2,3].forEach(b=>{
+  [1,2,25,3].forEach(b=>{
     const f=s.some(x=>x.data===h&&x.bloco===b);
     document.getElementById('ok'+b).classList.toggle('hide',!f);
     document.getElementById('c'+b).classList.toggle('feito',f);
   });
   document.getElementById('hdr-dia').textContent =
-    [1,2,3].filter(b=>s.some(x=>x.data===h&&x.bloco===b)).length + '/3 blocos hoje';
+    [1,2,25,3].filter(b=>s.some(x=>x.data===h&&x.bloco===b)).length + '/4 blocos hoje';
 }
 
 function kpis(){
@@ -406,6 +457,13 @@ function pintar(){
     <td class="n">${x.sk??'–'}</td><td class="n">${x.ttk??'–'}</td><td class="n">${x.mk??'–'}</td></tr>`).join('');
   const b2=s.filter(x=>x.bloco===2&&x.angulos&&x.baixa!=null);
   linha(document.getElementById('g-mira'), b2.map(x=>({y:Math.round(x.baixa/x.angulos*100)})),'#f59e0b',null);
+  const pr=s.filter(x=>x.bloco===25&&x.erros!=null);
+  linha(document.getElementById('g-prac'), pr.map(x=>({y:x.erros})),'#22c55e',null);
+  document.querySelector('#t-prac tbody').innerHTML = pr.length
+    ? pr.slice().reverse().map(x=>`<tr><td>${dm(x.data)}</td><td>${x.mapa||'–'}</td>
+        <td style="font-size:11.5px">${(x.rota||'–').slice(0,20)}</td><td class="n">${x.dif??'–'}</td>
+        <td class="n"><b>${x.erros}</b></td><td class="n">${x.mortes??'–'}</td></tr>`).join('')
+    : '<tr><td colspan="6" style="color:#8b9bb0">Nenhuma rota registrada ainda.</td></tr>';
   const ps=s.filter(x=>x.partida&&x.partida.vm!=null);
   linha(document.getElementById('g-vm'), ps.map(x=>({y:x.partida.vm})),'#a78bfa',[1]);
   document.querySelector('#t-part tbody').innerHTML = ps.length
@@ -414,11 +472,12 @@ function pintar(){
         <td class="n"><b>${p.vm??'–'}</b></td><td class="n">${p.tc??'–'}</td>
         <td class="n">${p.dano??'–'}</td></tr>`}).join('')
     : '<tr><td colspan="7" style="color:#8b9bb0">Nenhuma partida ainda.</td></tr>';
-  const nm={1:'mão',2:'mira',3:'transf.'};
+  const nm={1:'mão',2:'mira',25:'5E_Prac',3:'transf.'};
   document.querySelector('#t-hist tbody').innerHTML = s.slice().reverse().slice(0,40).map(x=>{
     let pr='–';
     if(x.bloco===1) pr=(x.kpm?.toFixed(1)??'–')+' kpm';
     if(x.bloco===2&&x.angulos) pr=Math.round(x.baixa/x.angulos*100)+'% baixa';
+    if(x.bloco===25&&x.erros!=null) pr=x.erros+' erros · '+(x.rota||'');
     if(x.bloco===3&&x.erros!=null) pr=x.erros+' erros';
     return `<tr><td>${dm(x.data)}</td><td>${nm[x.bloco]||'–'}</td>
       <td class="n">${x.minutos??'–'}</td><td>${pr}</td>
@@ -431,9 +490,9 @@ function baixar(nome,txt,tipo){const a=document.createElement('a');
 function exportar(){baixar('treino-cs2-'+hoje()+'.json',JSON.stringify(ler(),null,2),'application/json');aviso('JSON exportado')}
 function exportarCsv(){
   const l=['data,bloco,minutos,kills,tempo_s,kpm,shots_kill,ttk_ms,move_shot,move_kill,'+
-    'mapa,angulos,mira_baixa,erros,p_mapa,p_modo,p_vitimas,p_mortes,p_vm,p_tc,p_dano,p_pontos,nota'];
+    'mapa,rota,dificuldade,mortes,angulos,mira_baixa,erros,p_mapa,p_modo,p_vitimas,p_mortes,p_vm,p_tc,p_dano,p_pontos,nota'];
   ler().sessoes.forEach(x=>l.push([x.data,x.bloco,x.minutos??'',x.kills??'',x.tempo??'',x.kpm??'',
-    x.sk??'',x.ttk??'',x.ms??'',x.mk??'',x.mapa??'',x.angulos??'',x.baixa??'',x.erros??'',
+    x.sk??'',x.ttk??'',x.ms??'',x.mk??'',x.mapa??'',x.rota??'',x.dif??'',x.mortes??'',x.angulos??'',x.baixa??'',x.erros??'',
     x.partida?.mapa??'',x.partida?.modo??'',x.partida?.v??'',x.partida?.m??'',x.partida?.vm??'',
     x.partida?.tc??'',x.partida?.dano??'',x.partida?.pts??'',
     '"'+(x.nota||'').replace(/"/g,"'")+'"'].join(',')));
