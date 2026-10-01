@@ -157,6 +157,31 @@ svg{width:100%;height:170px;display:block}
   </div>
 
   <div class="card">
+    <h2>Placar da partida <span class="badge">opcional</span></h2>
+    <p class="why">Copie do placar final do CS2, na mesma ordem das colunas.
+    O <b>V/M é calculado sozinho</b>.</p>
+    <div class="row">
+      <div><label>Mapa</label><input id="p-mapa" placeholder="Dust II"></div>
+      <div><label>Modo</label><select id="p-modo">
+        <option>Mata-Mata</option><option>Competitivo</option>
+        <option>Premier</option><option>Retake</option><option>Casual</option>
+      </select></div>
+    </div>
+    <div class="row">
+      <div><label>Vítimas</label><input type="number" id="p-v" inputmode="numeric" placeholder="46"></div>
+      <div><label>Mortes</label><input type="number" id="p-m" inputmode="numeric" placeholder="43"></div>
+      <div><label>Assist.</label><input type="number" id="p-a" inputmode="numeric" placeholder="8"></div>
+    </div>
+    <div class="row">
+      <div><label>%TC</label><input type="number" id="p-tc" inputmode="numeric" placeholder="82"></div>
+      <div><label>Dano</label><input type="number" id="p-d" inputmode="numeric" placeholder="4334"></div>
+      <div><label>Pontos</label><input type="number" id="p-p" inputmode="numeric" placeholder="523"></div>
+    </div>
+    <p class="hint">⚠️ Placar <b>não mede</b> o que estamos treinando. Dá pra fechar com V/M 1,5
+    atirando andando o tempo todo. O número que vale continua sendo <b>erros contados</b>.</p>
+  </div>
+
+  <div class="card">
     <h2>Anotação</h2>
     <textarea id="f-nota" placeholder="O que travou? Onde você atirou andando? Sensação?"></textarea>
   </div>
@@ -192,6 +217,16 @@ svg{width:100%;height:170px;display:block}
     <h2>aim_botz — KPM</h2>
     <p class="why">Controle. Você já está no teto aqui (95% de counter-strafe); não persiga isso.</p>
     <div id="g-kpm"></div>
+  </div>
+
+  <div class="card">
+    <h2>Partidas — V/M</h2>
+    <p class="why">Contexto, não meta. Dá pra ter V/M alto atirando andando o tempo todo.</p>
+    <div id="g-vm"></div>
+    <div style="overflow-x:auto;margin-top:10px"><table id="t-part"><thead><tr>
+      <th>Data</th><th>Mapa</th><th class="n">V</th><th class="n">M</th>
+      <th class="n">V/M</th><th class="n">%TC</th><th class="n">Dano</th>
+    </tr></thead><tbody></tbody></table></div>
   </div>
 
   <div class="card">
@@ -300,10 +335,16 @@ function salvar(){
   if(min===null&&err===null&&!g('f-nota')){aviso('Preencha ao menos minutos ou erros');return}
   const botz=(g('f-t')||g('f-k')||g('f-s'))
     ? {t:g('f-t')?+g('f-t'):null,kpm:g('f-k')?+g('f-k'):null,sk:g('f-s')?+g('f-s'):null} : null;
-  d.sessoes.push({data,minutos:min,erros:err,botz,nota:g('f-nota')||null,
+  const n=i=>g(i)?+g(i):null;
+  const temPartida=['p-v','p-m','p-a','p-tc','p-d','p-p'].some(i=>g(i)!=='');
+  const partida=temPartida?{mapa:g('p-mapa')||null,modo:g('p-modo')||null,
+    v:n('p-v'),m:n('p-m'),a:n('p-a'),tc:n('p-tc'),dano:n('p-d'),pts:n('p-p'),
+    vm:(n('p-v')!=null&&n('p-m'))?+(n('p-v')/n('p-m')).toFixed(2):null}:null;
+  d.sessoes.push({data,minutos:min,erros:err,botz,partida,nota:g('f-nota')||null,
     blocos:[['mao',b1.checked],['mira',b2.checked],['transf',b3.checked]].filter(x=>x[1]).map(x=>x[0])});
   grav(d);
-  ['f-min','f-err','f-t','f-k','f-s','f-nota'].forEach(i=>document.getElementById(i).value='');
+  ['f-min','f-err','f-t','f-k','f-s','f-nota','p-mapa','p-v','p-m','p-a','p-tc','p-d','p-p']
+    .forEach(i=>document.getElementById(i).value='');
   kpis();
   let msg='Sessão salva';
   if(err!==null){
@@ -359,6 +400,16 @@ function pintar(){
     s.filter(x=>x.erros!==null).map(x=>({y:x.erros})),'#ef4444',[15,5]);
   linha(document.getElementById('g-kpm'),
     s.filter(x=>x.botz&&x.botz.kpm!=null).map(x=>({y:x.botz.kpm})),'#3b82f6',null);
+  const ps=s.filter(x=>x.partida&&x.partida.vm!=null);
+  linha(document.getElementById('g-vm'),ps.map(x=>({y:x.partida.vm})),'#a78bfa',[1]);
+  document.querySelector('#t-part tbody').innerHTML = ps.length
+    ? ps.slice().reverse().map(x=>{const p=x.partida;return `<tr>
+        <td>${x.data.slice(8,10)}/${x.data.slice(5,7)}</td>
+        <td style="font-size:12px">${p.mapa||'–'}</td>
+        <td class="n">${p.v??'–'}</td><td class="n">${p.m??'–'}</td>
+        <td class="n"><b>${p.vm??'–'}</b></td><td class="n">${p.tc??'–'}</td>
+        <td class="n">${p.dano??'–'}</td></tr>`}).join('')
+    : '<tr><td colspan="7" style="color:#8b9bb0">Nenhuma partida registrada ainda.</td></tr>';
   const tb=document.querySelector('#t-hist tbody');
   tb.innerHTML=s.slice().reverse().map(x=>`<tr>
     <td>${x.data.slice(8,10)}/${x.data.slice(5,7)}</td>
@@ -377,9 +428,13 @@ function baixar(nome,txt,tipo){
 function exportar(){baixar('treino-cs2-'+new Date().toISOString().slice(0,10)+'.json',
   JSON.stringify(ler(),null,2),'application/json');aviso('JSON exportado')}
 function exportarCsv(){
-  const l=['data,minutos,erros,botz_tempo_s,botz_kpm,botz_shots_kill,nota'];
+  const l=['data,minutos,erros,botz_tempo_s,botz_kpm,botz_shots_kill,'+
+    'mapa,modo,vitimas,mortes,assist,vm,tc_pct,dano,pontos,nota'];
   ler().sessoes.forEach(x=>l.push([x.data,x.minutos??'',x.erros??'',
-    x.botz?.t??'',x.botz?.kpm??'',x.botz?.sk??'','"'+(x.nota||'').replace(/"/g,"'")+'"'].join(',')));
+    x.botz?.t??'',x.botz?.kpm??'',x.botz?.sk??'',
+    x.partida?.mapa??'',x.partida?.modo??'',x.partida?.v??'',x.partida?.m??'',
+    x.partida?.a??'',x.partida?.vm??'',x.partida?.tc??'',x.partida?.dano??'',x.partida?.pts??'',
+    '"'+(x.nota||'').replace(/"/g,"'")+'"'].join(',')));
   baixar('treino-cs2-'+new Date().toISOString().slice(0,10)+'.csv',l.join('\n'),'text/csv');
   aviso('CSV exportado');
 }
