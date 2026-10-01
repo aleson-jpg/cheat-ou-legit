@@ -6,199 +6,174 @@
 <meta name="theme-color" content="#0b0f17">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Treino CS2 — ALES0N</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-:root{
-  --bg:#0b0f17; --card:#141b26; --card2:#1b2532; --line:#263242;
-  --tx:#e8eef7; --dim:#8b9bb0; --ac:#3b82f6; --ok:#22c55e; --warn:#f59e0b; --bad:#ef4444;
-}
-html,body{margin:0;padding:0;background:var(--bg);color:var(--tx);
-  font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
-  padding-bottom:env(safe-area-inset-bottom)}
-body{font-size:16px;line-height:1.45}
-header{padding:18px 16px 12px;border-bottom:1px solid var(--line);
-  position:sticky;top:0;background:var(--bg);z-index:10}
-h1{margin:0;font-size:19px;letter-spacing:.3px}
-h1 span{color:var(--ac)}
+:root{--bg:#0b0f17;--card:#141b26;--card2:#1b2532;--line:#263242;
+ --tx:#e8eef7;--dim:#8b9bb0;--ac:#3b82f6;--ok:#22c55e;--warn:#f59e0b;--bad:#ef4444;--rx:#a78bfa}
+html,body{margin:0;background:var(--bg);color:var(--tx);
+ font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.45}
+header{padding:16px 16px 11px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--bg);z-index:10}
+h1{margin:0;font-size:19px}h1 span{color:var(--ac)}
 .sub{color:var(--dim);font-size:12.5px;margin-top:3px}
-main{padding:14px 14px 90px;max-width:620px;margin:0 auto}
+main{padding:14px 14px 92px;max-width:640px;margin:0 auto}
 .tabs{display:flex;gap:6px;position:fixed;bottom:0;left:0;right:0;background:var(--card);
-  border-top:1px solid var(--line);padding:8px 8px calc(8px + env(safe-area-inset-bottom));z-index:20}
-.tabs button{flex:1;background:none;border:0;color:var(--dim);font-size:12px;font-weight:600;
-  padding:9px 2px;border-radius:10px;cursor:pointer}
+ border-top:1px solid var(--line);padding:8px 8px calc(8px + env(safe-area-inset-bottom));z-index:20}
+.tabs button{flex:1;background:none;border:0;color:var(--dim);font-size:12px;font-weight:600;padding:9px 2px;border-radius:10px}
 .tabs button.on{background:var(--ac);color:#fff}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+.card.feito{border-color:var(--ok);background:linear-gradient(180deg,#0f2318,var(--card))}
 .card h2{margin:0 0 4px;font-size:15px}
-.card .why{color:var(--dim);font-size:13px;margin:6px 0 0}
-.badge{display:inline-block;font-size:11px;font-weight:700;padding:3px 8px;border-radius:99px;
-  background:var(--card2);color:var(--dim);margin-left:6px}
-.badge.key{background:#1e3a8a;color:#bfdbfe}
+.why{color:var(--dim);font-size:13px;margin:6px 0 0}
+.badge{display:inline-block;font-size:11px;font-weight:700;padding:3px 8px;border-radius:99px;background:var(--card2);color:var(--dim);margin-left:6px}
+.badge.key{background:#1e3a8a;color:#bfdbfe}.badge.ok{background:#14532d;color:#bbf7d0}
 .tmr{display:flex;align-items:center;gap:10px;margin-top:12px}
-.tmr .big{font-variant-numeric:tabular-nums;font-size:30px;font-weight:700;min-width:104px}
-.tmr button{background:var(--card2);border:1px solid var(--line);color:var(--tx);
-  border-radius:10px;padding:9px 14px;font-size:14px;font-weight:600;cursor:pointer}
+.tmr .big{font-variant-numeric:tabular-nums;font-size:29px;font-weight:700;min-width:100px}
+.tmr button{background:var(--card2);border:1px solid var(--line);color:var(--tx);border-radius:10px;padding:9px 13px;font-size:14px;font-weight:600}
 .tmr button.go{background:var(--ac);border-color:var(--ac);color:#fff}
 .done{color:var(--ok)}
-label{display:block;font-size:13px;color:var(--dim);margin:12px 0 5px;font-weight:600}
-input,textarea,select{width:100%;background:var(--card2);border:1px solid var(--line);
-  color:var(--tx);border-radius:10px;padding:12px;font-size:16px;font-family:inherit}
-textarea{min-height:70px;resize:vertical}
-.row{display:flex;gap:10px}.row>*{flex:1}
-.btn{display:block;width:100%;background:var(--ac);color:#fff;border:0;border-radius:12px;
-  padding:15px;font-size:16px;font-weight:700;margin-top:16px;cursor:pointer}
-.btn.ghost{background:var(--card2);color:var(--tx);border:1px solid var(--line);font-weight:600;font-size:14px;padding:12px}
-.kpi{display:flex;gap:10px;margin-bottom:12px}
-.kpi div{flex:1;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:11px;text-align:center}
-.kpi b{display:block;font-size:22px;font-variant-numeric:tabular-nums}
-.kpi small{color:var(--dim);font-size:10.5px;text-transform:uppercase;letter-spacing:.4px}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th,td{text-align:left;padding:8px 4px;border-bottom:1px solid var(--line)}
-th{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.4px}
-td.n{font-variant-numeric:tabular-nums;text-align:right}
+label{display:block;font-size:13px;color:var(--dim);margin:11px 0 5px;font-weight:600}
+input,textarea,select{width:100%;background:var(--card2);border:1px solid var(--line);color:var(--tx);
+ border-radius:10px;padding:11px;font-size:16px;font-family:inherit}
+textarea{min-height:64px;resize:vertical;font-size:13px}
+.row{display:flex;gap:8px}.row>*{flex:1}
+.btn{display:block;width:100%;background:var(--ac);color:#fff;border:0;border-radius:12px;padding:14px;font-size:15px;font-weight:700;margin-top:14px}
+.btn.ok{background:var(--ok);color:#04210f}
+.btn.ghost{background:var(--card2);color:var(--tx);border:1px solid var(--line);font-weight:600;font-size:14px;padding:11px}
+.kpi{display:flex;gap:8px;margin-bottom:12px}
+.kpi div{flex:1;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;text-align:center}
+.kpi b{display:block;font-size:21px;font-variant-numeric:tabular-nums}
+.kpi small{color:var(--dim);font-size:10px;text-transform:uppercase;letter-spacing:.3px}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th,td{text-align:left;padding:7px 4px;border-bottom:1px solid var(--line)}
+th{color:var(--dim);font-size:10.5px;text-transform:uppercase}
+td.n,th.n{font-variant-numeric:tabular-nums;text-align:right}
 .hint{color:var(--dim);font-size:12.5px;margin-top:8px}
-.toast{position:fixed;left:14px;right:14px;bottom:78px;background:var(--ok);color:#06210f;
-  padding:13px;border-radius:12px;font-weight:700;text-align:center;z-index:50;display:none}
+.toast{position:fixed;left:14px;right:14px;bottom:78px;background:var(--ok);color:#04210f;
+ padding:13px;border-radius:12px;font-weight:700;text-align:center;z-index:50;display:none}
 .hide{display:none}
-svg{width:100%;height:170px;display:block}
-.lg{font-size:11px;color:var(--dim);display:flex;gap:14px;margin-top:6px;flex-wrap:wrap}
+svg{width:100%;height:160px;display:block}
+.lg{font-size:11px;color:var(--dim);display:flex;gap:12px;margin-top:6px;flex-wrap:wrap}
 .lg i{display:inline-block;width:10px;height:3px;border-radius:2px;margin-right:4px;vertical-align:middle}
+.form{border-top:1px dashed var(--line);margin-top:13px;padding-top:11px}
 </style>
 </head>
 <body>
 
 <header>
   <h1>TREINO <span>CS2</span> — ALES0N</h1>
-  <div class="sub" id="hdr">plano v3 · alvo counter-strafe <b>88%</b></div>
+  <div class="sub">plano v3 · alvo counter-strafe <b>88%</b> · <span id="hdr-dia"></span></div>
 </header>
 
 <main>
 
-<!-- ============ HOJE ============ -->
+<!-- ===================== HOJE ===================== -->
 <section id="v-hoje">
   <div class="kpi">
     <div><b id="k-seq">0</b><small>dias seguidos</small></div>
-    <div><b id="k-mes">0</b><small>sessões no mês</small></div>
-    <div><b id="k-err">–</b><small>erros últ. sessão</small></div>
+    <div><b id="k-mes">0</b><small>sessões mês</small></div>
+    <div><b id="k-err">–</b><small>erros últ.</small></div>
   </div>
 
   <div class="card">
     <h2>🔴 Dia curto — 30 minutos</h2>
     <p class="why">O gargalo NÃO é mecânica. No aim_botz você faz 95%; na partida, 74%.
-    É <b>transferência sob pressão</b>. Treine o que falta, não o que já está no teto.</p>
+    É <b>transferência sob pressão</b>.</p>
   </div>
 
-  <div class="card" data-blk="1" data-min="5">
-    <h2>1 · Soltar a mão <span class="badge">5 min</span></h2>
-    <p class="why">aim_botz, 100 bots, <b>sem contar nada</b>. Aquecimento, não treino.
-    Não passe de 5 min — você já faz 95% aqui, não sobrou o que ganhar.</p>
-    <div class="tmr"><span class="big">05:00</span>
-      <button class="go">Iniciar</button><button class="rs">Zerar</button></div>
+  <!-- BLOCO 1 -->
+  <div class="card" id="c1" data-blk="1" data-min="5">
+    <h2>1 · Soltar a mão <span class="badge">5 min</span><span class="badge ok hide" id="ok1">✅ feito hoje</span></h2>
+    <p class="why">aim_botz, <b>sem contar nada</b>. Aquecimento, não treino — você já faz 95% aqui.</p>
+    <div class="tmr"><span class="big">05:00</span><button class="go">Iniciar</button><button class="rs">Zerar</button></div>
+    <button class="btn ok" onclick="abrir(1)">✅ Concluí este bloco</button>
+
+    <div class="form hide" id="f1">
+      <label>📋 Cole aqui a saída do Aim Botz <span style="color:var(--ac)">— eu preencho o resto</span></label>
+      <textarea id="a-colar" placeholder="[ Aim Botz ] 500 Kills Challenge
+Finished in: 07:12.031 (432031.25ms)
+Kills/min: 69.44 | Kills/sec: 1.16 | TTK Med: 629ms
+Shots/Kill: 2.14 | Aim Shot/Hit: 219ms/812ms
+Move Shot (Avg/Med/Std/Spread): 14.08/0/23.4/27.3
+Move Kill (Avg/Med/Std/Spread): 3.24/0/11.7/12.1"></textarea>
+      <button class="btn ghost" onclick="parseBotz()">🪄 Ler a saída colada</button>
+
+      <div class="row"><div><label>Kills</label><input type="number" id="a-kills" placeholder="250"></div>
+        <div><label>Tempo (s)</label><input type="number" step="0.01" id="a-t" placeholder="432.03"></div></div>
+      <div class="row"><div><label>Kills/min</label><input type="number" step="0.01" id="a-kpm"></div>
+        <div><label>Tiros/kill</label><input type="number" step="0.01" id="a-sk"></div>
+        <div><label>TTK med</label><input type="number" id="a-ttk"></div></div>
+      <div class="row"><div><label>Move Shot (avg)</label><input type="number" step="0.01" id="a-ms"></div>
+        <div><label>⭐ Move Kill (avg)</label><input type="number" step="0.01" id="a-mk"></div></div>
+      <p class="hint">⭐ <b>Move Kill</b> é o que mede parada: quanto <b>menor</b>, mais parado você estava ao matar.</p>
+      <label>Anotação</label><textarea id="a-nota" placeholder="sensação, mouse, aquecimento..."></textarea>
+      <button class="btn" onclick="salvarBloco(1)">SALVAR BLOCO 1</button>
+      <button class="btn ghost" onclick="fechar(1)">cancelar</button>
+    </div>
   </div>
 
-  <div class="card" data-blk="2" data-min="10">
-    <h2>2 · Altura de mira <span class="badge key">⭐ 10 min</span></h2>
-    <p class="why">Mirage ou Inferno, <b>sozinho, sem bot, sem atirar</b>. Percorra os caminhos
-    que você usa de verdade com a mira na altura da cabeça, parando em cada ângulo.<br><br>
-    Você acerta tanto quanto o lobby (20,8%) mas só <b>10%</b> vai na cabeça, contra 13,7% deles.
-    Está mirando baixo — e isso não conserta atirando, conserta <b>andando</b>.<br><br>
-    1. Ande até um ângulo → 2. Pare → 3. "Se sair alguém agora, minha mira está na cabeça?" → 4. Corrija e siga</p>
-    <div class="tmr"><span class="big">10:00</span>
-      <button class="go">Iniciar</button><button class="rs">Zerar</button></div>
+  <!-- BLOCO 2 -->
+  <div class="card" id="c2" data-blk="2" data-min="10">
+    <h2>2 · Altura de mira <span class="badge key">⭐ 10 min</span><span class="badge ok hide" id="ok2">✅ feito hoje</span></h2>
+    <p class="why">Mirage ou Inferno, <b>sozinho, sem bot, sem atirar</b>. Mira na altura da cabeça,
+    parando em cada ângulo. Você acerta como o lobby (20,8%) mas só <b>10%</b> vai na cabeça — está mirando baixo.<br><br>
+    1. Anda até o ângulo → 2. Para → 3. "se sair alguém agora, minha mira tá na cabeça?" → 4. Corrige</p>
+    <div class="tmr"><span class="big">10:00</span><button class="go">Iniciar</button><button class="rs">Zerar</button></div>
+    <button class="btn ok" onclick="abrir(2)">✅ Concluí este bloco</button>
+
+    <div class="form hide" id="f2">
+      <div class="row"><div><label>Minutos</label><input type="number" id="b-min" placeholder="10"></div>
+        <div><label>Mapa</label><input id="b-mapa" placeholder="Mirage"></div></div>
+      <label>Quantos ângulos você passou?</label><input type="number" id="b-ang" placeholder="ex: 18">
+      <label>Em quantos a mira estava BAIXA?</label><input type="number" id="b-baixa" placeholder="ex: 7">
+      <p class="hint">Essa razão é a sua medida aqui. Quer ver <b>baixa/total</b> caindo com o tempo.</p>
+      <label>Anotação</label><textarea id="b-nota" placeholder="quais ângulos te pegaram?"></textarea>
+      <button class="btn" onclick="salvarBloco(2)">SALVAR BLOCO 2</button>
+      <button class="btn ghost" onclick="fechar(2)">cancelar</button>
+    </div>
   </div>
 
-  <div class="card" data-blk="3" data-min="15">
-    <h2>3 · Transferência <span class="badge key">⭐ 15 min — O QUE IMPORTA</span></h2>
-    <p class="why">Deathmatch ou retake. <b>Uma regra só:</b> contra-passo antes de cada tiro.
-    Se atirou deslizando, <b>conte o erro em voz alta</b>. Não corrija a mira — <b>conte o erro</b>.<br><br>
-    <b>Meta:</b> menos de <b>15 erros</b> em 15 min. Se contou menos de 5,
-    você estava no automático, não se policiando.</p>
-    <div class="tmr"><span class="big">15:00</span>
-      <button class="go">Iniciar</button><button class="rs">Zerar</button></div>
+  <!-- BLOCO 3 -->
+  <div class="card" id="c3" data-blk="3" data-min="15">
+    <h2>3 · Transferência <span class="badge key">⭐ 15 min — O QUE IMPORTA</span><span class="badge ok hide" id="ok3">✅ feito hoje</span></h2>
+    <p class="why">DM ou retake. <b>Uma regra:</b> contra-passo antes de cada tiro.
+    Atirou deslizando → <b>conta o erro em voz alta</b>. Não corrige a mira — <b>conta o erro</b>.<br><br>
+    <b>Meta:</b> menos de <b>15 erros</b> em 15 min. Menos de 5 = você estava no automático.</p>
+    <div class="tmr"><span class="big">15:00</span><button class="go">Iniciar</button><button class="rs">Zerar</button></div>
+    <button class="btn ok" onclick="abrir(3)">✅ Concluí este bloco</button>
+
+    <div class="form hide" id="f3">
+      <div class="row"><div><label>Minutos</label><input type="number" id="t-min" placeholder="15"></div>
+        <div><label>⭐ Erros contados</label><input type="number" id="t-err" placeholder="12"></div></div>
+      <label>Placar da partida <span style="color:var(--dim);font-weight:400">(opcional)</span></label>
+      <div class="row"><div><input id="t-mapa" placeholder="Mapa"></div>
+        <div><select id="t-modo"><option>Mata-Mata</option><option>Competitivo</option>
+          <option>Premier</option><option>Retake</option><option>Casual</option></select></div></div>
+      <div class="row"><div><input type="number" id="t-v" placeholder="Vítimas"></div>
+        <div><input type="number" id="t-m" placeholder="Mortes"></div>
+        <div><input type="number" id="t-tc" placeholder="%TC"></div></div>
+      <div class="row"><div><input type="number" id="t-d" placeholder="Dano"></div>
+        <div><input type="number" id="t-p" placeholder="Pontos"></div></div>
+      <p class="hint">⚠️ Placar <b>não mede</b> o que treinamos. Dá pra ter V/M 1,5 atirando andando o tempo todo.</p>
+      <label>Anotação</label><textarea id="t-nota" placeholder="onde você mais deslizou? saindo de ângulo? trocando de alvo?"></textarea>
+      <button class="btn" onclick="salvarBloco(3)">SALVAR BLOCO 3</button>
+      <button class="btn ghost" onclick="fechar(3)">cancelar</button>
+    </div>
   </div>
 
   <div class="card">
     <h2>🟢 Se sobrar tempo</h2>
-    <p class="why">10 min spray de 10 na parede (manutenção — seu spray já está acima do lobby)<br>
-    20 min partida de verdade com <code>-condebug</code> — a única medição que vale</p>
+    <p class="why">10 min spray de 10 na parede · 20 min partida de verdade com <code>-condebug</code></p>
   </div>
-
-  <button class="btn" onclick="ir('reg')">✅ TREINEI — registrar sessão</button>
 </section>
 
-<!-- ============ REGISTRAR ============ -->
-<section id="v-reg" class="hide">
-  <div class="card">
-    <h2>Registrar sessão</h2>
-    <label>Data</label><input type="date" id="f-data">
-    <div class="row">
-      <div><label>Minutos treinados</label><input type="number" id="f-min" inputmode="numeric" placeholder="30"></div>
-      <div><label>⭐ Erros contados</label><input type="number" id="f-err" inputmode="numeric" placeholder="ex: 12"></div>
-    </div>
-    <p class="hint">O campo que decide tudo é <b>erros contados</b> no bloco 3.
-    Meta: &lt;15. Menos de 5 = você não estava se policiando.</p>
-    <label>Blocos que você fez</label>
-    <div class="row" style="gap:6px">
-      <label style="margin:0"><input type="checkbox" id="b1" style="width:auto" checked> mão</label>
-      <label style="margin:0"><input type="checkbox" id="b2" style="width:auto" checked> mira</label>
-      <label style="margin:0"><input type="checkbox" id="b3" style="width:auto" checked> transf.</label>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>aim_botz <span class="badge">opcional</span></h2>
-    <p class="why">Só se você rodou os 100 bots contando. Serve de controle — não é a meta.</p>
-    <div class="row">
-      <div><label>Tempo (s)</label><input type="number" step="0.1" id="f-t" inputmode="decimal" placeholder="73.4"></div>
-      <div><label>KPM</label><input type="number" step="0.01" id="f-k" inputmode="decimal" placeholder="81.7"></div>
-      <div><label>Tiros/kill</label><input type="number" step="0.01" id="f-s" inputmode="decimal" placeholder="2.07"></div>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>Placar da partida <span class="badge">opcional</span></h2>
-    <p class="why">Copie do placar final do CS2, na mesma ordem das colunas.
-    O <b>V/M é calculado sozinho</b>.</p>
-    <div class="row">
-      <div><label>Mapa</label><input id="p-mapa" placeholder="Dust II"></div>
-      <div><label>Modo</label><select id="p-modo">
-        <option>Mata-Mata</option><option>Competitivo</option>
-        <option>Premier</option><option>Retake</option><option>Casual</option>
-      </select></div>
-    </div>
-    <div class="row">
-      <div><label>Vítimas</label><input type="number" id="p-v" inputmode="numeric" placeholder="46"></div>
-      <div><label>Mortes</label><input type="number" id="p-m" inputmode="numeric" placeholder="43"></div>
-      <div><label>Assist.</label><input type="number" id="p-a" inputmode="numeric" placeholder="8"></div>
-    </div>
-    <div class="row">
-      <div><label>%TC</label><input type="number" id="p-tc" inputmode="numeric" placeholder="82"></div>
-      <div><label>Dano</label><input type="number" id="p-d" inputmode="numeric" placeholder="4334"></div>
-      <div><label>Pontos</label><input type="number" id="p-p" inputmode="numeric" placeholder="523"></div>
-    </div>
-    <p class="hint">⚠️ Placar <b>não mede</b> o que estamos treinando. Dá pra fechar com V/M 1,5
-    atirando andando o tempo todo. O número que vale continua sendo <b>erros contados</b>.</p>
-  </div>
-
-  <div class="card">
-    <h2>Anotação</h2>
-    <textarea id="f-nota" placeholder="O que travou? Onde você atirou andando? Sensação?"></textarea>
-  </div>
-
-  <button class="btn" onclick="salvar()">SALVAR SESSÃO</button>
-  <button class="btn ghost" onclick="ir('hoje')">cancelar</button>
-</section>
-
-<!-- ============ EVOLUÇÃO ============ -->
+<!-- ===================== EVOLUÇÃO ===================== -->
 <section id="v-evo" class="hide">
   <div class="card">
-    <h2>Erros contados por sessão</h2>
-    <p class="why">É o número que mede a <b>transferência</b>. Quer ver descendo — mas não pra zero.</p>
+    <h2>⭐ Erros contados — bloco 3</h2>
+    <p class="why">É o número que mede transferência. Quer descendo, mas não até zero.</p>
     <div id="g-err"></div>
-    <div class="lg"><span><i style="background:#ef4444"></i>seus erros</span>
-      <span><i style="background:#22c55e"></i>meta &lt;15</span>
-      <span><i style="background:#f59e0b"></i>piso 5 (automático)</span></div>
+    <div class="lg"><span><i style="background:#ef4444"></i>erros</span><span><i style="background:#22c55e"></i>meta &lt;15</span><span><i style="background:#f59e0b"></i>piso 5</span></div>
   </div>
 
   <div class="card">
@@ -206,243 +181,268 @@ svg{width:100%;height:170px;display:block}
     <p class="why">Sai das demos, não daqui. Eu extraio e atualizo.</p>
     <div class="kpi" style="margin:10px 0 0">
       <div><b style="color:var(--bad)">74,1%</b><small>hoje</small></div>
-      <div><b style="color:var(--dim)">84,5%</b><small>seu lobby</small></div>
-      <div><b style="color:var(--ok)">88%</b><small>alvo 4 sem.</small></div>
+      <div><b style="color:var(--dim)">84,5%</b><small>lobby</small></div>
+      <div><b style="color:var(--ok)">88%</b><small>alvo</small></div>
     </div>
-    <p class="hint">Teto medido: m0NESY 93,6% · donk 89,8%. Piso tier-1: karrigan 73,6%.
-    <b>Ninguém para 100%</b> — mire em 88%.</p>
   </div>
 
   <div class="card">
-    <h2>aim_botz — KPM</h2>
-    <p class="why">Controle. Você já está no teto aqui (95% de counter-strafe); não persiga isso.</p>
+    <h2>aim_botz — bloco 1</h2>
+    <p class="why">⚠️ Só compare runs com <b>o mesmo número de kills</b>. Volume diferente = métrica diferente.</p>
     <div id="g-kpm"></div>
+    <div class="lg"><span><i style="background:#3b82f6"></i>Kills/min</span></div>
+    <div style="overflow-x:auto;margin-top:10px"><table id="t-botz"><thead><tr>
+      <th>Data</th><th class="n">kills</th><th class="n">kpm</th><th class="n">t/kill</th>
+      <th class="n">TTK</th><th class="n">move kill</th></tr></thead><tbody></tbody></table></div>
+  </div>
+
+  <div class="card">
+    <h2>Altura de mira — bloco 2</h2>
+    <p class="why">Fração de ângulos com a mira baixa. Quer caindo.</p>
+    <div id="g-mira"></div>
   </div>
 
   <div class="card">
     <h2>Partidas — V/M</h2>
-    <p class="why">Contexto, não meta. Dá pra ter V/M alto atirando andando o tempo todo.</p>
     <div id="g-vm"></div>
     <div style="overflow-x:auto;margin-top:10px"><table id="t-part"><thead><tr>
-      <th>Data</th><th>Mapa</th><th class="n">V</th><th class="n">M</th>
-      <th class="n">V/M</th><th class="n">%TC</th><th class="n">Dano</th>
-    </tr></thead><tbody></tbody></table></div>
+      <th>Data</th><th>Mapa</th><th class="n">V</th><th class="n">M</th><th class="n">V/M</th>
+      <th class="n">%TC</th><th class="n">Dano</th></tr></thead><tbody></tbody></table></div>
   </div>
 
   <div class="card">
-    <h2>Histórico</h2>
+    <h2>Tudo</h2>
     <div style="overflow-x:auto"><table id="t-hist"><thead><tr>
-      <th>Data</th><th class="n">min</th><th class="n">erros</th><th class="n">kpm</th><th>nota</th>
+      <th>Data</th><th>Bloco</th><th class="n">min</th><th>principal</th><th>nota</th>
     </tr></thead><tbody></tbody></table></div>
   </div>
 </section>
 
-<!-- ============ MAIS ============ -->
+<!-- ===================== MAIS ===================== -->
 <section id="v-mais" class="hide">
   <div class="card">
     <h2>Os mapas</h2>
-    <p class="why">
-      <b>Aim Botz</b> — aquecimento, 5 min. 13M+ inscritos, atualizado jun/2026<br>
-      <b>Yprac Arena</b> — prefire e ângulos, versão por mapa (Dust2, Mirage, Inferno)<br>
-      <b>Recoil Master</b> — spray. Ligue <i>Show Bullet Impacts</i> + <i>Ghosthair</i><br>
-      <b>Fast Aim/Reflex</b> — flick rápido
-    </p>
+    <p class="why"><b>Aim Botz</b> — aquecimento, 5 min<br>
+    <b>Yprac Arena</b> — prefire e ângulos, versão por mapa<br>
+    <b>Recoil Master</b> — spray; ligue <i>Show Bullet Impacts</i> + <i>Ghosthair</i><br>
+    <b>Fast Aim/Reflex</b> — flick rápido</p>
   </div>
-
   <div class="card">
     <h2>⚠️ Os 4 erros</h2>
-    <p class="why">
-      1. Voltar pro aim_botz achando que resolve — lá você já faz 95%<br>
-      2. Perseguir precisão — a sua já está acima do lobby E dos pros<br>
-      3. Tentar parar 100% — nenhum profissional faz<br>
-      4. Achar que jogar agressivo é atirar andando — medido: donk, m0NESY e NiKo
-      são os que <b>MAIS</b> param. Agressão é <b>onde</b> você escolhe estar,
-      não <b>como</b> você puxa o gatilho
-    </p>
+    <p class="why">1. Voltar pro aim_botz achando que resolve — lá você já faz 95%<br>
+    2. Perseguir precisão — a sua já está acima do lobby E dos pros<br>
+    3. Tentar parar 100% — nenhum profissional faz<br>
+    4. Achar que agressivo é atirar andando — donk, m0NESY e NiKo são os que MAIS param</p>
   </div>
-
   <div class="card">
     <h2>Dados</h2>
-    <p class="why">Tudo fica só neste celular. Exporte e me mande que eu importo pro banco.</p>
+    <p class="why">Tudo fica só neste celular. Exporte e me mande que eu importo.</p>
     <button class="btn ghost" onclick="exportar()">⬇️ Exportar JSON</button>
     <button class="btn ghost" onclick="exportarCsv()">⬇️ Exportar CSV</button>
     <button class="btn ghost" onclick="zerar()" style="color:var(--bad)">Apagar tudo</button>
   </div>
 </section>
-
 </main>
 
 <div class="tabs">
   <button id="t-hoje" class="on" onclick="ir('hoje')">HOJE</button>
-  <button id="t-reg" onclick="ir('reg')">REGISTRAR</button>
   <button id="t-evo" onclick="ir('evo')">EVOLUÇÃO</button>
   <button id="t-mais" onclick="ir('mais')">MAIS</button>
 </div>
-
 <div class="toast" id="toast"></div>
 
 <script>
-const K='treino-cs2-aleson-v1';
-const SEED={v:1,sessoes:[
- {data:"2026-09-18",minutos:null,erros:null,botz:{t:73.4,kpm:81.70,sk:2.07},nota:"aim_botz (histórico importado)"},
- {data:"2026-09-18",minutos:null,erros:null,botz:{t:77.6,kpm:77.28,sk:2.27},nota:"aim_botz (histórico importado)"},
- {data:"2026-09-18",minutos:null,erros:null,botz:{t:65.7,kpm:91.28,sk:2.05},nota:"aim_botz (histórico importado)"},
- {data:"2026-09-28",minutos:null,erros:null,botz:null,nota:"1a sessao do plano v3. Aquecimento + mira alta no mapa + prefire OK. DM pouco."}
-]};
+const K='treino-cs2-aleson-v2';
+const HIST=[
+ ["2026-09-17",66.3,90.50,1.93,471,8.21],["2026-09-17",75.6,79.36,2.31,525,2.86],
+ ["2026-09-17",76.97,77.95,2.09,513,4.28],["2026-09-17",69.5,86.33,2.00,503,4.70],
+ ["2026-09-17",68.6,87.00,2.00,446,1.89],["2026-09-18",67.2,89.26,2.28,474,2.27],
+ ["2026-09-18",70.2,85.47,2.18,468,0.79],["2026-09-18",73.4,81.70,2.07,492,4.19],
+ ["2026-09-18",77.6,77.28,2.27,539,1.23],["2026-09-18",65.7,91.28,2.05,433,3.95]
+].map(([d,t,kpm,sk,ttk,mk])=>({data:d,bloco:1,kills:100,tempo:t,kpm,sk,ttk,mk,nota:"histórico importado"}));
+HIST.push({data:"2026-10-01",bloco:1,kills:500,tempo:432.03,kpm:69.44,sk:2.14,ttk:629,
+           ms:14.08,mk:3.24,nota:"500 kills — primeira run longa"});
+const SEED={v:2,sessoes:HIST};
 
+const hoje=()=>new Date().toISOString().slice(0,10);
 function ler(){try{return JSON.parse(localStorage.getItem(K))||SEED}catch(e){return SEED}}
 function grav(d){localStorage.setItem(K,JSON.stringify(d))}
 if(!localStorage.getItem(K))grav(SEED);
+const g=i=>(document.getElementById(i).value||"").trim();
+const n=i=>g(i)?+g(i):null;
 
-function ir(v){
-  ['hoje','reg','evo','mais'].forEach(x=>{
-    document.getElementById('v-'+x).classList.toggle('hide',x!==v);
-    document.getElementById('t-'+x).classList.toggle('on',x===v);
-  });
-  window.scrollTo(0,0);
-  if(v==='evo')pintar();
-  if(v==='reg'&&!document.getElementById('f-data').value)
-    document.getElementById('f-data').value=new Date().toISOString().slice(0,10);
-}
-
+function ir(v){['hoje','evo','mais'].forEach(x=>{
+  document.getElementById('v-'+x).classList.toggle('hide',x!==v);
+  document.getElementById('t-'+x).classList.toggle('on',x===v)});
+  window.scrollTo(0,0); if(v==='evo')pintar()}
 function aviso(m){const t=document.getElementById('toast');t.textContent=m;t.style.display='block';
-  setTimeout(()=>t.style.display='none',2600)}
+  setTimeout(()=>t.style.display='none',3200)}
+function abrir(b){document.getElementById('f'+b).classList.remove('hide');
+  document.getElementById('f'+b).scrollIntoView({behavior:'smooth',block:'nearest'})}
+function fechar(b){document.getElementById('f'+b).classList.add('hide')}
 
 /* ---------- cronômetros ---------- */
 document.querySelectorAll('[data-blk]').forEach(c=>{
   const min=+c.dataset.min, big=c.querySelector('.big');
-  let left=min*60, id=null;
+  let left=min*60,id=null;
   const fmt=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
   const go=c.querySelector('.go'), rs=c.querySelector('.rs');
-  go.onclick=()=>{
-    if(id){clearInterval(id);id=null;go.textContent='Continuar';go.classList.remove('go');return}
-    go.textContent='Pausar';go.classList.add('go');
-    id=setInterval(()=>{
-      left--;big.textContent=fmt(left);
+  go.onclick=()=>{ if(id){clearInterval(id);id=null;go.textContent='Continuar';return}
+    go.textContent='Pausar';
+    id=setInterval(()=>{left--;big.textContent=fmt(left);
       if(left<=0){clearInterval(id);id=null;big.textContent='FEITO';big.classList.add('done');
-        go.textContent='Iniciar';if(navigator.vibrate)navigator.vibrate([200,80,200])}
-    },1000);
-  };
+        go.textContent='Iniciar';if(navigator.vibrate)navigator.vibrate([200,80,200])}},1000)};
   rs.onclick=()=>{clearInterval(id);id=null;left=min*60;big.textContent=fmt(left);
-    big.classList.remove('done');go.textContent='Iniciar';go.classList.add('go')};
+    big.classList.remove('done');go.textContent='Iniciar'};
 });
 
-/* ---------- salvar ---------- */
-function salvar(){
-  const d=ler(), g=i=>document.getElementById(i).value.trim();
-  const data=g('f-data')||new Date().toISOString().slice(0,10);
-  const min=g('f-min')?+g('f-min'):null, err=g('f-err')?+g('f-err'):null;
-  if(min===null&&err===null&&!g('f-nota')){aviso('Preencha ao menos minutos ou erros');return}
-  const botz=(g('f-t')||g('f-k')||g('f-s'))
-    ? {t:g('f-t')?+g('f-t'):null,kpm:g('f-k')?+g('f-k'):null,sk:g('f-s')?+g('f-s'):null} : null;
-  const n=i=>g(i)?+g(i):null;
-  const temPartida=['p-v','p-m','p-a','p-tc','p-d','p-p'].some(i=>g(i)!=='');
-  const partida=temPartida?{mapa:g('p-mapa')||null,modo:g('p-modo')||null,
-    v:n('p-v'),m:n('p-m'),a:n('p-a'),tc:n('p-tc'),dano:n('p-d'),pts:n('p-p'),
-    vm:(n('p-v')!=null&&n('p-m'))?+(n('p-v')/n('p-m')).toFixed(2):null}:null;
-  d.sessoes.push({data,minutos:min,erros:err,botz,partida,nota:g('f-nota')||null,
-    blocos:[['mao',b1.checked],['mira',b2.checked],['transf',b3.checked]].filter(x=>x[1]).map(x=>x[0])});
-  grav(d);
-  ['f-min','f-err','f-t','f-k','f-s','f-nota','p-mapa','p-v','p-m','p-a','p-tc','p-d','p-p']
-    .forEach(i=>document.getElementById(i).value='');
-  kpis();
-  let msg='Sessão salva';
-  if(err!==null){
-    if(err<5) msg='Salvo — mas '+err+' erros é pouco: você estava no automático';
-    else if(err<15) msg='Salvo — '+err+' erros, dentro da meta 👊';
-    else msg='Salvo — '+err+' erros, acima da meta (<15). Normal no começo';
-  }
-  aviso(msg); ir('evo');
+/* ---------- parser da saída do Aim Botz ---------- */
+function parseBotz(){
+  const s=g('a-colar'); if(!s){aviso('Cole a saída do Aim Botz primeiro');return}
+  const pega=(re,i)=>{const m=s.match(re);return m?m[i||1]:null};
+  const set=(id,v)=>{if(v!=null&&v!=='')document.getElementById(id).value=v};
+  set('a-kills', pega(/\]\s*(\d+)\s*Kills/i));
+  const ms=pega(/\(([\d.]+)\s*ms\)/i);
+  set('a-t', ms?(+ms/1000).toFixed(2):null);
+  set('a-kpm', pega(/Kills\/min:\s*([\d.]+)/i));
+  set('a-ttk', pega(/TTK\s*Med:\s*([\d.]+)/i));
+  set('a-sk',  pega(/Shots\/Kill:\s*([\d.]+)/i));
+  set('a-ms',  pega(/Move\s*Shot[^:]*:\s*([\d.]+)/i));
+  set('a-mk',  pega(/Move\s*Kill[^:]*:\s*([\d.]+)/i));
+  const achou=['a-kills','a-kpm','a-ttk','a-sk','a-mk'].filter(i=>g(i)).length;
+  aviso(achou>=4?'Li '+achou+' campos ✅ confira e salve':'Li só '+achou+' — complete na mão');
 }
 
-/* ---------- kpis ---------- */
+/* ---------- salvar por bloco ---------- */
+function salvarBloco(b){
+  const d=ler(); let r={data:hoje(),bloco:b}, msg='';
+  if(b===1){
+    if(!g('a-kpm')&&!g('a-kills')){aviso('Cole a saída ou preencha kills/kpm');return}
+    Object.assign(r,{kills:n('a-kills'),tempo:n('a-t'),kpm:n('a-kpm'),sk:n('a-sk'),
+      ttk:n('a-ttk'),ms:n('a-ms'),mk:n('a-mk'),nota:g('a-nota')||null});
+    const ant=d.sessoes.filter(x=>x.bloco===1&&x.kills===r.kills&&x.kpm!=null);
+    msg = ant.length ? 'Bloco 1 salvo — '+(r.kpm>=Math.max(...ant.map(x=>x.kpm))?'melhor kpm com '+r.kills+' kills 🔥':'kpm abaixo do seu melhor com '+r.kills+' kills')
+                     : 'Bloco 1 salvo — 1ª run com '+r.kills+' kills, vira sua base';
+    ['a-colar','a-kills','a-t','a-kpm','a-sk','a-ttk','a-ms','a-mk','a-nota'].forEach(i=>document.getElementById(i).value='');
+  }
+  if(b===2){
+    Object.assign(r,{minutos:n('b-min'),mapa:g('b-mapa')||null,angulos:n('b-ang'),
+      baixa:n('b-baixa'),nota:g('b-nota')||null});
+    if(r.angulos&&r.baixa!=null){const p=Math.round(r.baixa/r.angulos*100);
+      msg='Bloco 2 salvo — mira baixa em '+p+'% dos ângulos';}
+    else msg='Bloco 2 salvo';
+    ['b-min','b-mapa','b-ang','b-baixa','b-nota'].forEach(i=>document.getElementById(i).value='');
+  }
+  if(b===3){
+    Object.assign(r,{minutos:n('t-min'),erros:n('t-err'),nota:g('t-nota')||null});
+    if(['t-v','t-m','t-tc','t-d','t-p'].some(i=>g(i))||g('t-mapa'))
+      r.partida={mapa:g('t-mapa')||null,modo:g('t-modo')||null,v:n('t-v'),m:n('t-m'),
+        tc:n('t-tc'),dano:n('t-d'),pts:n('t-p'),
+        vm:(n('t-v')!=null&&n('t-m'))?+(n('t-v')/n('t-m')).toFixed(2):null};
+    const e=r.erros;
+    msg = e==null ? 'Bloco 3 salvo'
+        : e<5  ? 'Salvo — só '+e+' erros: você estava no automático, não se policiando'
+        : e<15 ? 'Salvo — '+e+' erros, dentro da meta 👊'
+        : 'Salvo — '+e+' erros, acima da meta (<15). Normal no começo';
+    ['t-min','t-err','t-mapa','t-v','t-m','t-tc','t-d','t-p','t-nota'].forEach(i=>document.getElementById(i).value='');
+  }
+  d.sessoes.push(r); grav(d); fechar(b); marcar(); kpis(); aviso(msg);
+}
+
+/* ---------- estado do dia ---------- */
+function marcar(){
+  const s=ler().sessoes, h=hoje();
+  [1,2,3].forEach(b=>{
+    const f=s.some(x=>x.data===h&&x.bloco===b);
+    document.getElementById('ok'+b).classList.toggle('hide',!f);
+    document.getElementById('c'+b).classList.toggle('feito',f);
+  });
+  document.getElementById('hdr-dia').textContent =
+    [1,2,3].filter(b=>s.some(x=>x.data===h&&x.bloco===b)).length + '/3 blocos hoje';
+}
+
 function kpis(){
-  const s=ler().sessoes, hoje=new Date();
-  const mes=s.filter(x=>x.data.slice(0,7)===hoje.toISOString().slice(0,7)).length;
-  const comErro=s.filter(x=>x.erros!==null);
-  document.getElementById('k-mes').textContent=mes;
-  document.getElementById('k-err').textContent=comErro.length?comErro[comErro.length-1].erros:'–';
-  // dias seguidos
+  const s=ler().sessoes;
+  document.getElementById('k-mes').textContent =
+    s.filter(x=>x.data.slice(0,7)===hoje().slice(0,7)).length;
+  const e=s.filter(x=>x.erros!=null);
+  document.getElementById('k-err').textContent = e.length?e[e.length-1].erros:'–';
   const dias=[...new Set(s.map(x=>x.data))].sort().reverse();
-  let seq=0, d=new Date();
-  for(;;){const iso=d.toISOString().slice(0,10);
+  let seq=0,d=new Date();
+  for(let i=0;i<400;i++){const iso=d.toISOString().slice(0,10);
     if(dias.includes(iso)){seq++;d.setDate(d.getDate()-1)}
-    else if(seq===0&&iso===new Date().toISOString().slice(0,10)){d.setDate(d.getDate()-1)}
-    else break;
-    if(seq>400)break}
+    else if(seq===0&&iso===hoje()){d.setDate(d.getDate()-1)} else break}
   document.getElementById('k-seq').textContent=seq;
 }
 
-/* ---------- gráficos (SVG puro, sem biblioteca) ---------- */
+/* ---------- gráficos ---------- */
 function linha(el,pts,cor,metas){
-  const W=320,H=170,P=26;
-  if(!pts.length){el.innerHTML='<p class="hint">Sem dado ainda — registre uma sessão.</p>';return}
+  const W=320,H=160,P=26;
+  if(!pts.length){el.innerHTML='<p class="hint">Sem dado ainda.</p>';return}
   const ys=pts.map(p=>p.y).concat(metas||[]);
-  const min=Math.min(...ys,0), max=Math.max(...ys)*1.15||1;
+  const mn=Math.min(...ys,0), mx=Math.max(...ys)*1.15||1;
   const X=i=>P+(pts.length<2?(W-2*P)/2:i*(W-2*P)/(pts.length-1));
-  const Y=v=>H-P-((v-min)/(max-min))*(H-2*P);
+  const Y=v=>H-P-((v-mn)/(mx-mn))*(H-2*P);
   let s=`<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">`;
   s+=`<line x1="${P}" y1="${H-P}" x2="${W-P}" y2="${H-P}" stroke="#263242"/>`;
-  (metas||[]).forEach((m,i)=>{const c=i?'#f59e0b':'#22c55e';
-    s+=`<line x1="${P}" y1="${Y(m)}" x2="${W-P}" y2="${Y(m)}" stroke="${c}" stroke-dasharray="4 4" opacity=".8"/>`});
+  (metas||[]).forEach((m,i)=>{s+=`<line x1="${P}" y1="${Y(m)}" x2="${W-P}" y2="${Y(m)}"
+     stroke="${i?'#f59e0b':'#22c55e'}" stroke-dasharray="4 4" opacity=".8"/>`});
   s+=`<polyline fill="none" stroke="${cor}" stroke-width="2.5" stroke-linejoin="round"
       points="${pts.map((p,i)=>X(i)+','+Y(p.y)).join(' ')}"/>`;
-  pts.forEach((p,i)=>{s+=`<circle cx="${X(i)}" cy="${Y(p.y)}" r="3.5" fill="${cor}"/>`});
-  s+=`<text x="4" y="${Y(max)+4}" fill="#8b9bb0" font-size="9">${max.toFixed(0)}</text>`;
-  s+=`<text x="4" y="${H-P+4}" fill="#8b9bb0" font-size="9">${min.toFixed(0)}</text>`;
-  s+=`</svg>`;
+  pts.forEach((p,i)=>s+=`<circle cx="${X(i)}" cy="${Y(p.y)}" r="3.4" fill="${cor}"/>`);
+  s+=`<text x="3" y="${Y(mx)+4}" fill="#8b9bb0" font-size="9">${mx.toFixed(0)}</text>`;
+  s+=`<text x="3" y="${H-P+4}" fill="#8b9bb0" font-size="9">${mn.toFixed(0)}</text></svg>`;
   el.innerHTML=s;
 }
+const dm=d=>d.slice(8,10)+'/'+d.slice(5,7);
 
 function pintar(){
   const s=ler().sessoes;
-  linha(document.getElementById('g-err'),
-    s.filter(x=>x.erros!==null).map(x=>({y:x.erros})),'#ef4444',[15,5]);
-  linha(document.getElementById('g-kpm'),
-    s.filter(x=>x.botz&&x.botz.kpm!=null).map(x=>({y:x.botz.kpm})),'#3b82f6',null);
+  linha(document.getElementById('g-err'), s.filter(x=>x.erros!=null).map(x=>({y:x.erros})),'#ef4444',[15,5]);
+  const b1=s.filter(x=>x.bloco===1&&x.kpm!=null);
+  linha(document.getElementById('g-kpm'), b1.map(x=>({y:x.kpm})),'#3b82f6',null);
+  document.querySelector('#t-botz tbody').innerHTML = b1.slice().reverse().map(x=>`<tr>
+    <td>${dm(x.data)}</td><td class="n">${x.kills??'–'}</td><td class="n"><b>${x.kpm?.toFixed(1)??'–'}</b></td>
+    <td class="n">${x.sk??'–'}</td><td class="n">${x.ttk??'–'}</td><td class="n">${x.mk??'–'}</td></tr>`).join('');
+  const b2=s.filter(x=>x.bloco===2&&x.angulos&&x.baixa!=null);
+  linha(document.getElementById('g-mira'), b2.map(x=>({y:Math.round(x.baixa/x.angulos*100)})),'#f59e0b',null);
   const ps=s.filter(x=>x.partida&&x.partida.vm!=null);
-  linha(document.getElementById('g-vm'),ps.map(x=>({y:x.partida.vm})),'#a78bfa',[1]);
+  linha(document.getElementById('g-vm'), ps.map(x=>({y:x.partida.vm})),'#a78bfa',[1]);
   document.querySelector('#t-part tbody').innerHTML = ps.length
-    ? ps.slice().reverse().map(x=>{const p=x.partida;return `<tr>
-        <td>${x.data.slice(8,10)}/${x.data.slice(5,7)}</td>
-        <td style="font-size:12px">${p.mapa||'–'}</td>
-        <td class="n">${p.v??'–'}</td><td class="n">${p.m??'–'}</td>
+    ? ps.slice().reverse().map(x=>{const p=x.partida;return `<tr><td>${dm(x.data)}</td>
+        <td>${p.mapa||'–'}</td><td class="n">${p.v??'–'}</td><td class="n">${p.m??'–'}</td>
         <td class="n"><b>${p.vm??'–'}</b></td><td class="n">${p.tc??'–'}</td>
         <td class="n">${p.dano??'–'}</td></tr>`}).join('')
-    : '<tr><td colspan="7" style="color:#8b9bb0">Nenhuma partida registrada ainda.</td></tr>';
-  const tb=document.querySelector('#t-hist tbody');
-  tb.innerHTML=s.slice().reverse().map(x=>`<tr>
-    <td>${x.data.slice(8,10)}/${x.data.slice(5,7)}</td>
-    <td class="n">${x.minutos??'–'}</td>
-    <td class="n">${x.erros??'–'}</td>
-    <td class="n">${x.botz&&x.botz.kpm!=null?x.botz.kpm.toFixed(1):'–'}</td>
-    <td style="color:#8b9bb0;font-size:12px">${(x.nota||'').slice(0,42)}</td></tr>`).join('');
+    : '<tr><td colspan="7" style="color:#8b9bb0">Nenhuma partida ainda.</td></tr>';
+  const nm={1:'mão',2:'mira',3:'transf.'};
+  document.querySelector('#t-hist tbody').innerHTML = s.slice().reverse().slice(0,40).map(x=>{
+    let pr='–';
+    if(x.bloco===1) pr=(x.kpm?.toFixed(1)??'–')+' kpm';
+    if(x.bloco===2&&x.angulos) pr=Math.round(x.baixa/x.angulos*100)+'% baixa';
+    if(x.bloco===3&&x.erros!=null) pr=x.erros+' erros';
+    return `<tr><td>${dm(x.data)}</td><td>${nm[x.bloco]||'–'}</td>
+      <td class="n">${x.minutos??'–'}</td><td>${pr}</td>
+      <td style="color:#8b9bb0">${(x.nota||'').slice(0,26)}</td></tr>`}).join('');
 }
 
 /* ---------- export ---------- */
-function baixar(nome,txt,tipo){
-  const a=document.createElement('a');
-  a.href=URL.createObjectURL(new Blob([txt],{type:tipo}));
-  a.download=nome;a.click();
-}
-function exportar(){baixar('treino-cs2-'+new Date().toISOString().slice(0,10)+'.json',
-  JSON.stringify(ler(),null,2),'application/json');aviso('JSON exportado')}
+function baixar(nome,txt,tipo){const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([txt],{type:tipo}));a.download=nome;a.click()}
+function exportar(){baixar('treino-cs2-'+hoje()+'.json',JSON.stringify(ler(),null,2),'application/json');aviso('JSON exportado')}
 function exportarCsv(){
-  const l=['data,minutos,erros,botz_tempo_s,botz_kpm,botz_shots_kill,'+
-    'mapa,modo,vitimas,mortes,assist,vm,tc_pct,dano,pontos,nota'];
-  ler().sessoes.forEach(x=>l.push([x.data,x.minutos??'',x.erros??'',
-    x.botz?.t??'',x.botz?.kpm??'',x.botz?.sk??'',
-    x.partida?.mapa??'',x.partida?.modo??'',x.partida?.v??'',x.partida?.m??'',
-    x.partida?.a??'',x.partida?.vm??'',x.partida?.tc??'',x.partida?.dano??'',x.partida?.pts??'',
+  const l=['data,bloco,minutos,kills,tempo_s,kpm,shots_kill,ttk_ms,move_shot,move_kill,'+
+    'mapa,angulos,mira_baixa,erros,p_mapa,p_modo,p_vitimas,p_mortes,p_vm,p_tc,p_dano,p_pontos,nota'];
+  ler().sessoes.forEach(x=>l.push([x.data,x.bloco,x.minutos??'',x.kills??'',x.tempo??'',x.kpm??'',
+    x.sk??'',x.ttk??'',x.ms??'',x.mk??'',x.mapa??'',x.angulos??'',x.baixa??'',x.erros??'',
+    x.partida?.mapa??'',x.partida?.modo??'',x.partida?.v??'',x.partida?.m??'',x.partida?.vm??'',
+    x.partida?.tc??'',x.partida?.dano??'',x.partida?.pts??'',
     '"'+(x.nota||'').replace(/"/g,"'")+'"'].join(',')));
-  baixar('treino-cs2-'+new Date().toISOString().slice(0,10)+'.csv',l.join('\n'),'text/csv');
-  aviso('CSV exportado');
+  baixar('treino-cs2-'+hoje()+'.csv',l.join('\n'),'text/csv');aviso('CSV exportado');
 }
 function zerar(){if(confirm('Apagar TODAS as sessões deste celular?')){
-  localStorage.removeItem(K);grav(SEED);kpis();pintar();aviso('Zerado')}}
+  localStorage.removeItem(K);grav(SEED);marcar();kpis();pintar();aviso('Zerado')}}
 
-kpis();
-document.getElementById('f-data').value=new Date().toISOString().slice(0,10);
+marcar(); kpis();
 </script>
 </body>
 </html>
