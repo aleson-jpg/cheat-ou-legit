@@ -62,7 +62,7 @@ svg{width:100%;height:160px;display:block}
 
 <header>
   <h1>TREINO <span>CS2</span> — ALES0N</h1>
-  <div class="sub">plano v3 · alvo counter-strafe <b>88%</b> · <span id="hdr-dia"></span></div>
+  <div class="sub">plano v3 · alvo counter-strafe <b>88%</b> · <span id="hdr-dia"></span><br><span style="opacity:.55;font-size:10px">v20261002-1418 · <a href="#" onclick="recarregar();return false" style="color:var(--ac)">recarregar</a></span></div>
 </header>
 
 <main>
@@ -106,6 +106,10 @@ Move Kill (Avg/Med/Std/Spread): 3.24/0/11.7/12.1"></textarea>
       <div class="row"><div><label>Move Shot (avg)</label><input type="number" step="0.01" id="a-ms"></div>
         <div><label>⭐ Move Kill (avg)</label><input type="number" step="0.01" id="a-mk"></div></div>
       <p class="hint">⭐ <b>Move Kill</b> é o que mede parada: quanto <b>menor</b>, mais parado você estava ao matar.</p>
+      
+      <label>📎 Anexar print, foto ou log <small style="opacity:.6">(opcional)</small></label>
+      <input type="file" id="anx-1" accept="image/*,.log,.txt,.cfg" multiple>
+      <div class="why" id="anx-st-1" style="margin-top:4px"></div>
       <label>Anotação</label><textarea id="a-nota" placeholder="sensação, mouse, aquecimento..."></textarea>
       <button class="btn" onclick="salvarBloco(1)">SALVAR BLOCO 1</button>
       <button class="btn ghost" onclick="fechar(1)">cancelar</button>
@@ -127,6 +131,10 @@ Move Kill (Avg/Med/Std/Spread): 3.24/0/11.7/12.1"></textarea>
       <label>Quantos ângulos você passou?</label><input type="number" id="b-ang" placeholder="ex: 18">
       <label>Em quantos a mira estava BAIXA?</label><input type="number" id="b-baixa" placeholder="ex: 7">
       <p class="hint">Essa razão é a sua medida aqui. Quer ver <b>baixa/total</b> caindo com o tempo.</p>
+      
+      <label>📎 Anexar print, foto ou log <small style="opacity:.6">(opcional)</small></label>
+      <input type="file" id="anx-2" accept="image/*,.log,.txt,.cfg" multiple>
+      <div class="why" id="anx-st-2" style="margin-top:4px"></div>
       <label>Anotação</label><textarea id="b-nota" placeholder="quais ângulos te pegaram?"></textarea>
       <button class="btn" onclick="salvarBloco(2)">SALVAR BLOCO 2</button>
       <button class="btn ghost" onclick="fechar(2)">cancelar</button>
@@ -158,6 +166,10 @@ Move Kill (Avg/Med/Std/Spread): 3.24/0/11.7/12.1"></textarea>
         <div><label>Mortes</label><input type="number" id="p-mortes" placeholder="3"></div>
       </div>
       <p class="hint">Mesma rota + mesma dificuldade = comparável. Mudou um dos dois, começa série nova.</p>
+      
+      <label>📎 Anexar print, foto ou log <small style="opacity:.6">(opcional)</small></label>
+      <input type="file" id="anx-25" accept="image/*,.log,.txt,.cfg" multiple>
+      <div class="why" id="anx-st-25" style="margin-top:4px"></div>
       <label>Anotação</label><textarea id="p-nota" placeholder="qual ângulo te pegou? onde deslizou?"></textarea>
       <button class="btn" onclick="salvarBloco(25)">SALVAR BLOCO 2.5</button>
       <button class="btn ghost" onclick="fechar(25)">cancelar</button>
@@ -186,6 +198,10 @@ Move Kill (Avg/Med/Std/Spread): 3.24/0/11.7/12.1"></textarea>
       <div class="row"><div><input type="number" id="t-d" placeholder="Dano"></div>
         <div><input type="number" id="t-p" placeholder="Pontos"></div></div>
       <p class="hint">⚠️ Placar <b>não mede</b> o que treinamos. Dá pra ter V/M 1,5 atirando andando o tempo todo.</p>
+      
+      <label>📎 Anexar print, foto ou log <small style="opacity:.6">(opcional)</small></label>
+      <input type="file" id="anx-3" accept="image/*,.log,.txt,.cfg" multiple>
+      <div class="why" id="anx-st-3" style="margin-top:4px"></div>
       <label>Anotação</label><textarea id="t-nota" placeholder="onde você mais deslizou? saindo de ângulo? trocando de alvo?"></textarea>
       <button class="btn" onclick="salvarBloco(3)">SALVAR BLOCO 3</button>
       <button class="btn ghost" onclick="fechar(3)">cancelar</button>
@@ -397,6 +413,7 @@ function parseBotz(){
 
 /* ---------- salvar por bloco ---------- */
 function salvarBloco(b){
+  anexarBloco(b);          // anexo vai junto, sem travar o salvamento local
   const d=ler(); let r={data:hoje(),bloco:b}, msg='';
   if(b===1){
     if(!g('a-kpm')&&!g('a-kills')){aviso('Cole a saída ou preencha kills/kpm');return}
@@ -695,6 +712,41 @@ function mostrarPerfil(p){
 }
 
 carregarCfg();
+
+/* ---------- ANEXOS: print / foto / log ---------- */
+function recarregar(){
+  // cache do navegador foi o que fez o Aleson ver "o treino de ontem" em 02/10,
+  // mesmo com a versao publicada ja correta. Isto forca buscar de novo.
+  location.replace(location.pathname + '?v=' + Date.now());
+}
+
+async function anexarBloco(bloco){
+  const c = cfg();
+  const inp = document.getElementById('anx-' + bloco);
+  const st  = document.getElementById('anx-st-' + bloco);
+  if(!inp || !inp.files.length) return true;          // nao tem anexo: segue
+  if(!c.api || !c.token){
+    st.textContent = '⚠️ anexo NAO enviado — configure a conexao na aba DEMO';
+    return false;                                     // avisa, mas nao perde o treino
+  }
+  let ok = 0, falhou = 0;
+  for(const f of inp.files){
+    const fd = new FormData();
+    fd.append('arquivo', f);
+    fd.append('bloco', String(bloco));
+    if(c.nick) fd.append('nota', 'nick:' + c.nick);
+    try{
+      const r = await fetch(c.api + '/v1/anexo', {
+        method:'POST', headers:{'Authorization':'Bearer ' + c.token}, body: fd});
+      r.ok ? ok++ : falhou++;
+    }catch(e){ falhou++; }
+    st.textContent = 'enviando anexos... ' + (ok+falhou) + '/' + inp.files.length;
+  }
+  st.textContent = falhou ? ('⚠️ ' + ok + ' enviado(s), ' + falhou + ' falhou(ram)')
+                          : ('✅ ' + ok + ' anexo(s) enviado(s)');
+  if(!falhou) inp.value = '';
+  return falhou === 0;
+}
 
 marcar(); kpis();
 </script>
